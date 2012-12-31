@@ -112,6 +112,11 @@
             mysql_query($normalEmailQuery);
             
         }
+        elseif($user->getContactMethod()==3)
+        {
+            //no notifications from this service.
+            //Do nothing
+        }
         else
         {
             echo 'An error has occured';
