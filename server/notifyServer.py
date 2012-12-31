@@ -96,7 +96,7 @@ def main():
     # incorrect number of command line arguments
 	else:
 		print("Usage: python3 notifyServer.py [pathToServer refreshIntervalMiliseconds]")
-		print("pathToServer is in this format: http://domain.com/notify/server/ " )
+		print("pathToServer is in this format: https://domain.com/notify/server/ " )
 		print("getNotifications.php and updateNotifications.php must be in that directory.")
 		return -1
 	
