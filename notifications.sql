@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 30, 2012 at 01:10 PM
+-- Generation Time: Dec 30, 2012 at 10:31 PM
 -- Server version: 5.5.28-0ubuntu0.12.04.3
 -- PHP Version: 5.3.10-1ubuntu3.4
 
@@ -23,6 +23,21 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `admin`
+--
+
+CREATE TABLE IF NOT EXISTS `admin` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` tinytext NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`),
+  KEY `id_2` (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `apiKeys`
 --
 
@@ -32,6 +47,7 @@ CREATE TABLE IF NOT EXISTS `apiKeys` (
   `key` tinytext NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
 
 -- --------------------------------------------------------
 
@@ -52,7 +68,7 @@ CREATE TABLE IF NOT EXISTS `cellCarrierInfo` (
 
 INSERT INTO `cellCarrierInfo` (`id`, `carrierName`, `domain`) VALUES
 (1, 'at&t', 'txt.att.net'),
-(2, 'verizon', 'vtext.com'),
+(2, 'Verizon', 'vtext.com'),
 (3, 'T-Mobile', 'tmomail.net'),
 (4, 'Sprint', 'messaging.sprintpcs.com'),
 (5, 'US Cellular', 'email.uscc.net');
@@ -70,7 +86,8 @@ CREATE TABLE IF NOT EXISTS `notifications` (
   `notificationText` tinytext NOT NULL,
   `active` tinyint(4) NOT NULL COMMENT '0 if notification sent. 1 if notification still needs to be sent.',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
 
 -- --------------------------------------------------------
 
@@ -83,10 +100,10 @@ CREATE TABLE IF NOT EXISTS `users` (
   `username` tinytext NOT NULL,
   `cellphoneNumber` bigint(20) NOT NULL,
   `cellCarrier` tinytext NOT NULL,
-  `RIDE` int(11) NOT NULL DEFAULT '0' COMMENT 'contact preference for RIDE. 0=email only. 1=text message. 2=Both',
+  `RIDE` int(11) NOT NULL DEFAULT '0' COMMENT 'contact preference for RIDE. 0=email only. 1=text message. 2=Both. 3=No notifications',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
