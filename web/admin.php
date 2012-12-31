@@ -103,9 +103,15 @@ require_once("dbConnect.php");
           <label>New Service Name</label>
           <input type="text" id="serviceName"  name="serviceName" value="">
 
-
+          
           <label>API Key</label>
-          <input type="text" id="apiKey" name="apiKey" readonly> <button id="genApiKey" class="btn btn-warning" onclick="generateApiKey()" type="button">Generate API Key</button>
+          <div class="input-append">
+          <input class="span3" id="apiKey" name="apiKey" type="text" readonly>
+          <button class="btn btn-warning" type="button" onclick="generateApiKey()">Generate API Key</button>
+          </div>
+          
+          <label>Username <font face="" color="#666666">(For notification containing API key)</label>
+          <input type="text" id="domain" name="domain" >
          
           <br>
            <button type="button" onclick="document.forms[0].submit();" class="btn btn-primary" btn-large> Submit&raquo;</button>
