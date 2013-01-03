@@ -5,8 +5,8 @@ require_once("dbConnect.php");
  
  if(isAdmin()==false)
  {
-     //echo 'Not admin';
-     //die();
+     echo 'Not admin';
+     die();
  }
 ?>
 <!DOCTYPE html>
@@ -34,6 +34,8 @@ require_once("dbConnect.php");
     <![endif]-->
 
     <!-- Le fav and touch icons -->
+    
+
     
   </head>
 
@@ -66,7 +68,7 @@ require_once("dbConnect.php");
           $eData = $_GET['e'];
           $eeData = $_GET['ee']; //Error Messages
         
-       $output = array("Settings updated successfully");
+       $output = array("Service created successfully.","Carrier information added.");
        $outputEE = array("An error has occured");  
                    
         if($eData<=0)
@@ -101,7 +103,7 @@ require_once("dbConnect.php");
       <h2>Admin Actions</h2>
       <legend>Add Service</legend>
           <label>New Service Name</label>
-          <input type="text" id="serviceName"  name="serviceName" value="">
+          <input type="text" id="serviceName"  name="serviceName" value="" onchange="validInput()" onkeypress="validInput()" onkeydown="validInput()" onkeyup="validInput()">
 
           
           <label>API Key</label>
@@ -111,23 +113,23 @@ require_once("dbConnect.php");
           </div>
           
           <label>Username <font face="" color="#666666">(For notification containing API key)</label>
-          <input type="text" id="domain" name="domain" >
+          <input type="text" id="username" name="username" >
          
           <br>
-           <button type="button" onclick="document.forms[0].submit();" class="btn btn-primary" btn-large> Submit&raquo;</button>
+           <button type="button" disabled id="submit1Button" onclick="document.forms[0].submit();" class="btn btn-primary" btn-large> Submit&raquo;</button>
       </form>
      <form ACTION=scripts/createCarrier.php METHOD="post">
         <legend>Add Carrier</legend>
             <label>New Carrier Name</label>
-          <input type="text" id="carrierName"  name="carrierName" value="">
+          <input type="text" id="carrierName"  name="carrierName" value="" onkeyup="validInput2()">
 
 
           <label>Carrier Domain</label>
-          <input type="text" id="domain" name="domain" >
+          <input type="text" id="domain" name="domain" onkeyup="validInput2()" >
          
 
           <br><p></p>
-          <button type="button" onclick="document.forms[0].submit();" class="btn btn-primary" btn-large> Submit&raquo;</button>
+          <button type="button" disabled id="submit2Button" onclick="document.forms[1].submit();" class="btn btn-primary" btn-large> Submit&raquo;</button>
 
 </form>
           
@@ -174,7 +176,40 @@ require_once("dbConnect.php");
                 }
                 
                 apiKey.value = randomstring;
-        }
+                }
+               window.onload =  generateApiKey();
+            function validInput()
+            {
+                var serviceName = document.getElementById("serviceName"); 
+                var submitButton = document.getElementById("submit1Button"); 
+                
+                if(serviceName.value!='')
+                {
+                    submitButton.disabled=false;
+                }
+                else
+                {
+                    submitButton.disabled=true;
+                }
+                
+            }
+            
+            function validInput2()
+            {
+                var carrierName = document.getElementById("carrierName"); 
+                var domain = document.getElementById("domain"); 
+                var submitButton = document.getElementById("submit2Button"); 
+                
+                if(carrierName.value!='' && domain.value!='')
+                {
+                    submitButton.disabled=false;
+                }
+                else
+                {
+                    submitButton.disabled=true;
+                }
+                
+            }
       </script>
 </body>
 </html>

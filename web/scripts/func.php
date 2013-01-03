@@ -1,5 +1,5 @@
 <?php
-
+//require_once('../dbConnect.php');
 function isAdmin()
 {
     connectToDb();
@@ -11,5 +11,11 @@ function isAdmin()
         return true;
     }
     return false;
+}
+
+function secureInput($inputString)
+{
+      $safeString = mysql_real_escape_string($inputString);
+      return $safeString;
 }
 ?>

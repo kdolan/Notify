@@ -44,7 +44,7 @@ require_once("dbConnect.php");
           <a class="brand" href="index.php">Notify</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <?php if(isAdmin() or true){ echo '<li><a href="admin.php">Admin</a></li>'; } ?>
+              <?php if(isAdmin()){ echo '<li><a href="admin.php">Admin</a></li>'; } ?>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -116,7 +116,7 @@ require_once("dbConnect.php");
           <label>Cell Phone Number <font face="" color="#666666">(Format 585-999-8888)</font></label>
           
           <div id= "cellPhoneDiv" class="">
-              <input type="text" id="cellPhone" onblur="validatePhone();"  name="cellPhone" value="<?php if($userHasPrefs){echo $formatedPhone;}?>">
+              <input type="text" id="cellPhone" onblur="validatePhone();" onkeyup="validatePhone();"  name="cellPhone" value="<?php if($userHasPrefs){echo $formatedPhone;}?>">
               <span class="help-inline" id="cellPhoneError"></span>
           </div>
           
@@ -224,7 +224,7 @@ require_once("dbConnect.php");
           
           ?>
           <br><p></p>
-          <button type="button" onclick="document.forms[0].submit();" class="btn btn-primary" btn-large> Submit&raquo;</button>
+          <button type="submit" disabled id="submit" onclick="document.forms[0].submit();" class="btn btn-primary" btn-large> Submit&raquo;</button>
 
 </form>
           
@@ -257,7 +257,19 @@ require_once("dbConnect.php");
     <script src="../bootstrap/js/bootstrap-carousel.js"></script>
     <script src="../bootstrap/js/bootstrap-typeahead.js"></script>
         <script type="text/javascript">
-            
+            var phoneValid = false;
+            function checkPhone()
+            {
+                 var submitbutton = document.getElementById("submit"); 
+                if(phoneValid)
+                {
+                    submitbutton.disabled = false;
+                }
+                else
+                {
+                    submitbutton.disabled = true;
+                }
+            }
             function validatePhone() {
                 var error = "";
                 
@@ -273,23 +285,31 @@ require_once("dbConnect.php");
                 }
 
                if (phoneInput.value == "") {
-                    error = "You didn't enter a phone number.\n";
+                    error = "This filed is required.\n";
                     phoneDiv.className="control-group error";
+                    phoneValid = false;
                 } else if (isNaN(parseInt(stripped))) {
                     error = "The phone number contains illegal characters.\n";
                     phoneDiv.className="control-group error";
+                    phoneValid = false;
                 } else if (!(stripped.length == 10)) {
                     error = "The phone number is the wrong length. Make sure you included an area code.\n";
                     phoneDiv.className="control-group error";
+                    phoneValid = false;
                 } 
                 else
                 {
                     phoneDiv.className="";
+                    phoneValid = true;
                 }
                 errorSpan.appendChild( document.createTextNode(error) );
+                checkPhone();
                 return 0;
             
         }
+        window.onload =  validatePhone();
+        window.onload =  checkPhone();
+
       </script>
 </body>
 </html>
