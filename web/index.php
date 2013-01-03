@@ -95,8 +95,8 @@ require_once("dbConnect.php");
       <h2>Notify Settings</h2>
       <legend>Cellphone Settings</legend>
       <?php
-            //$username = $_SERVER['WEBAUTH_USER'];
-            $username = 'kdolan';
+            $username = $_SERVER['WEBAUTH_USER'];
+
             connectToDb();
             $userQuery = "SELECT * FROM  `users` WHERE  `username` LIKE  '$username'";
             //echo  $userQuery;
