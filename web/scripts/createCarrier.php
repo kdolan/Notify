@@ -13,7 +13,7 @@ connectToDb();
 $carrierName = $_POST['carrierName'];
 $domain = $_POST['domain'];
 
-$query = "INSERT INTO  `notifications`.`cellCarrierInfo` (
+$query = "INSERT INTO  `kevin_notify`.`cellCarrierInfo` (
         `id` ,
         `carrierName` ,
         `domain`

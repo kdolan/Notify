@@ -20,7 +20,7 @@ $cellPhone = str_replace('-','',$cellPhone);
  $user = mysql_fetch_array($userResult);
  $userId = $user['id'];
  
- $updateSettings = "UPDATE  `notifications`.`users` SET  `cellphoneNumber` =  '$cellPhone',
+ $updateSettings = "UPDATE  `kevin_notify`.`users` SET  `cellphoneNumber` =  '$cellPhone',
 `cellCarrier` =  '$carrier' WHERE  `users`.`id` =$userId;";
 
   mysql_query($updateSettings);
@@ -32,7 +32,7 @@ $cellPhone = str_replace('-','',$cellPhone);
   
       $preference = $_POST[$serviceName];
       
-      $updateQuery = "UPDATE  `notifications`.`users` SET  `$serviceName` =  '$preference' WHERE  `users`.`id` =$userId;";
+      $updateQuery = "UPDATE  `kevin_notify`.`users` SET  `$serviceName` =  '$preference' WHERE  `users`.`id` =$userId;";
       mysql_query($updateQuery);
   }
 
