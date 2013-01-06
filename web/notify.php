@@ -69,7 +69,7 @@
         //Add notification(s)
         
         //Contruct Queries. If variable was not defined above it will just be ''
-        $normalEmailQuery = "INSERT INTO  `notifications`.`notifications` (
+        $normalEmailQuery = "INSERT INTO  `kevin_notify`.`notifications` (
             `id` ,
             `notificationService` ,
             `email` ,
@@ -80,7 +80,7 @@
             NULL ,  '$serviceName',  '$cshEmail',  '$notification',  '1'
             );";
             
-        $phoneEmailQuery = "INSERT INTO  `notifications`.`notifications` (
+        $phoneEmailQuery = "INSERT INTO  `kevin_notify`.`notifications` (
             `id` ,
             `notificationService` ,
             `email` ,
@@ -123,7 +123,7 @@
             die();
         }
            
-        echo 'success';     
+        //echo 'success';     
         
         
     }

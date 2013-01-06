@@ -1,5 +1,5 @@
 <?php
-require("notify.php"); 
+require("api.php"); 
 echo "TEST: ";
-notify("kdolan","Test123",'uRt0Tj8ZqX3KuUVb');
+notify("kdolan","Test123");
 ?>

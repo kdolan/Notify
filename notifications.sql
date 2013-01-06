@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `notifications`
+-- Database: `kevin_notify`
 --
 
 -- --------------------------------------------------------
@@ -76,10 +76,10 @@ INSERT INTO `cellCarrierInfo` (`id`, `carrierName`, `domain`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `notifications`
+-- Table structure for table `kevin_notify`
 --
 
-CREATE TABLE IF NOT EXISTS `notifications` (
+CREATE TABLE IF NOT EXISTS `kevin_notify` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `notificationService` tinytext NOT NULL COMMENT 'service that sent the notification.',
   `email` tinytext NOT NULL,

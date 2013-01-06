@@ -14,7 +14,7 @@ $serviceName = $_POST['serviceName'];
 $apiKey = $_POST['apiKey'];
 $usernameOfCreator = $_POST['username'];
 
-$query = "INSERT INTO  `notifications`.`apiKeys` (
+$query = "INSERT INTO  `kevin_notify`.`apiKeys` (
         `id` ,
         `serviceName` ,
         `key`
