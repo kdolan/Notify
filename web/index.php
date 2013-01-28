@@ -45,6 +45,7 @@ require_once("dbConnect.php");
           <div class="nav-collapse collapse">
             <ul class="nav">
               <?php if(isAdmin()){ echo '<li><a href="admin.php">Admin</a></li>'; } ?>
+              <?php if(hasService()){ echo '<li><a href="sendNotifications.php">Send Notifications</a></li>'; } ?>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -60,7 +61,7 @@ require_once("dbConnect.php");
           $eData = $_GET['e'];
           $eeData = $_GET['ee']; //Error Messages
         
-       $output = array("Settings updated successfully");
+       $output = array("Settings updated successfully","Successfully subscribed to service");
        $outputEE = array("An error has occured");  
                    
         if($eData<=0)
@@ -109,7 +110,15 @@ require_once("dbConnect.php");
                 $userInfo = mysql_fetch_array($userResult);
                 $userHasPrefs = true;
                 
-                $formatedPhone = substr($userInfo['cellphoneNumber'],0,3).'-'.substr($userInfo['cellphoneNumber'],3,3).'-'.substr($userInfo['cellphoneNumber'],6,4);
+                if($userInfo['cellphoneNumber']!=0)
+                {
+                  $formatedPhone = substr($userInfo['cellphoneNumber'],0,3).'-'.substr($userInfo['cellphoneNumber'],3,3).'-'.substr($userInfo['cellphoneNumber'],6,4);     
+                }
+                else
+                {
+                     $formatedPhone = '';
+                }
+                
             }
             
       ?>
@@ -121,12 +130,12 @@ require_once("dbConnect.php");
           </div>
           
           <label>Cell Phone Carrier:</label>
-          <select id="carrier" name="carrier">
+          <select id="carrier" name="carrier" onke>
           <?php
              $query = "SELECT * FROM  `cellCarrierInfo` ORDER BY  `cellCarrierInfo`.`carrierName` ASC ";
              $carrierTable = mysql_query($query);
              
-             echo $query;
+             //echo $query;
              
              while($row = mysql_fetch_array($carrierTable))
              {
@@ -162,50 +171,98 @@ require_once("dbConnect.php");
                 while($row = mysql_fetch_array($servicesResult))
                 {
                     $preferenceForThisService = $userInfo[$row['serviceName']];
-                    if($preferenceForThisService==0)
+                    $subscriptionService = $row['subscriptionService'];
+                    
+                   
+                    if($subscriptionService==1)
                     {
-                        echo '<h5>'.$row['serviceName'].':</h5> <select id="'.$row['serviceName'].'" name="'.$row['serviceName'].'">
-                            <option value="0" selected>Email Notification</option>
-                            <option value="1" >Text Message Notification</option>
-                            <option value="2">Email and Text Message Notification</option>
-                             <option value="3">No Notifications </option>
-                             </select>';
-                    }
-                    elseif($preferenceForThisService==1)
-                    {
-                    echo '<h5>'.$row['serviceName'].':</h5> <select id="'.$row['serviceName'].'" name="'.$row['serviceName'].'">
-                            <option value="0" selected>Email Notification</option>
-                            <option value="1" selected>Text Message Notification</option>
-                            <option value="2">Email and Text Message Notification</option>
-                             <option value="3">No Notifications </option>
-                             </select>';
-                    }
-                    elseif($preferenceForThisService==2)
-                    {
-                    echo '<h5>'.$row['serviceName'].':</h5> <select id="'.$row['serviceName'].'" name="'.$row['serviceName'].'">
-                            <option value="0" >Email Notification</option>
-                            <option value="1" >Text Message Notification</option>
-                            <option value="2" selected>Email and Text Notification</option>
-                             <option value="3">No Notifications </option>
-                             </select>';
-                    }
-                    elseif($preferenceForThisService==3)
-                    {
-                    echo '<h5>'.$row['serviceName'].':</h5> <select id="'.$row['serviceName'].'" name="'.$row['serviceName'].'">
-                            <option value="0">Email Notification</option>
-                            <option value="1">Text Message Notification</option>
-                            <option value="2">Email and Text Message Notification</option>
-                             <option value="3" selected>No Notifications </option>
-                             </select>';
+                    	if($preferenceForThisService==3)
+                    	{
+                    		echo '<h5>'.$row['serviceName'].':</h5><a class="btn btn-info" href="scripts/subscribe.php?serviceId='.$row['id'].'">Subscribe to '.$row['serviceName'].'</a>';
+                    	}
+                    	else
+                    	{
+                    	if($preferenceForThisService==0)
+						{
+							echo '<h5>'.$row['serviceName'].':</h5> <select id="'.str_replace(' ','',$row['serviceName']).'" name="'.str_replace(' ','',$row['serviceName']).'">
+								<option value="0" selected>Email Notification</option>
+								<option value="1" >Text Message Notification</option>
+								<option value="2">Email and Text Message Notification</option>
+								 <option value="3">No Notifications (Unsubscribe) </option>
+								 </select>';
+						}
+						elseif($preferenceForThisService==1)
+						{
+						echo '<h5>'.$row['serviceName'].':</h5> <select id="'.str_replace(' ','',$row['serviceName']).'" name="'.str_replace(' ','',$row['serviceName']).'">
+								<option value="0" selected>Email Notification</option>
+								<option value="1" selected>Text Message Notification</option>
+								<option value="2">Email and Text Message Notification</option>
+								 <option value="3">No Notifications (Unsubscribe) </option>
+								 </select>';
+						}
+						elseif($preferenceForThisService==2)
+						{
+						echo '<h5>'.$row['serviceName'].':</h5> <select id="'.str_replace(' ','',$row['serviceName']).'" name="'.str_replace(' ','',$row['serviceName']).'">
+								<option value="0" >Email Notification</option>
+								<option value="1" >Text Message Notification</option>
+								<option value="2" selected>Email and Text Notification</option>
+								 <option value="3">No Notifications (Unsubscribe) </option>
+								 </select>';
+						}
+						else
+						{
+                                echo '<h5>'.$row['serviceName'].':</h5><a class="btn btn-info" href="scripts/subscribe.php?serviceId='.$row['id'].'">Subscribe to '.$row['serviceName'].'</a>';  
+						}
+                    	
+                    	}
                     }
                     else
                     {
-                    echo $row['serviceName'].': <select id="'.$row['serviceName'].'" name="'.$row['serviceName'].'">
-                            <option value="0" selected>Email Notification</option>
-                            <option value="1" >Text Message Notification</option>
-                            <option value="2">Email and Text Message Notification</option>
-                             <option value="3">No Notifications </option>
-                             </select>';
+						if($preferenceForThisService==0)
+						{
+							echo '<h5>'.$row['serviceName'].':</h5> <select id="'.str_replace(' ','',$row['serviceName']).'" name="'.str_replace(' ','',$row['serviceName']).'">
+								<option value="0" selected>Email Notification</option>
+								<option value="1" >Text Message Notification</option>
+								<option value="2">Email and Text Message Notification</option>
+								 <option value="3">No Notifications </option>
+								 </select>';
+						}
+						elseif($preferenceForThisService==1)
+						{
+						echo '<h5>'.$row['serviceName'].':</h5> <select id="'.str_replace(' ','',$row['serviceName']).'" name="'.str_replace(' ','',$row['serviceName']).'">
+								<option value="0" selected>Email Notification</option>
+								<option value="1" selected>Text Message Notification</option>
+								<option value="2">Email and Text Message Notification</option>
+								 <option value="3">No Notifications </option>
+								 </select>';
+						}
+						elseif($preferenceForThisService==2)
+						{
+						echo '<h5>'.$row['serviceName'].':</h5> <select id="'.str_replace(' ','',$row['serviceName']).'" name="'.str_replace(' ','',$row['serviceName']).'">
+								<option value="0" >Email Notification</option>
+								<option value="1" >Text Message Notification</option>
+								<option value="2" selected>Email and Text Notification</option>
+								 <option value="3">No Notifications </option>
+								 </select>';
+						}
+						elseif($preferenceForThisService==3)
+						{
+						echo '<h5>'.$row['serviceName'].':</h5> <select id="'.str_replace(' ','',$row['serviceName']).'" name="'.str_replace(' ','',$row['serviceName']).'">
+								<option value="0">Email Notification</option>
+								<option value="1">Text Message Notification</option>
+								<option value="2">Email and Text Message Notification</option>
+								 <option value="3" selected>No Notifications </option>
+								 </select>';
+						}
+						else
+						{
+						echo $row['serviceName'].': <select id="'.str_replace(' ','',$row['serviceName']).'" name="'.str_replace(' ','',$row['serviceName']).'">
+								<option value="0" selected>Email Notification</option>
+								<option value="1" >Text Message Notification</option>
+								<option value="2">Email and Text Message Notification</option>
+								 <option value="3">No Notifications </option>
+								 </select>';
+						}
                     }
                 }
             }
@@ -213,18 +270,27 @@ require_once("dbConnect.php");
             {
                 while($row = mysql_fetch_array($servicesResult))
                 {
-                    echo '<h5>'.$row['serviceName'].':</h5> <select id="'.$row['serviceName'].'" name="'.$row['serviceName'].'">
+                    $subscriptionService = $row['subscriptionService']; 
+                     if($subscriptionService==1)
+                    {
+                         echo '<h5>'.$row['serviceName'].':</h5><a class="btn btn-info" href="scripts/subscribe.php?serviceId='.$row['id'].'">Subscribe to '.$row['serviceName'].'</a>';  
+                    }
+                    else
+                    {  
+                        echo '<h5>'.$row['serviceName'].':</h5> <select id="'.str_replace(' ','',$row['serviceName']).'" name="'.str_replace(' ','',$row['serviceName']).'">
                         <option value="0">Email Notification</option>
                         <option value="1">Text Message Notification</option>
                         <option value="2">Email and Text Message Notification</option>
                          <option value="3">No Notifications </option>
                          </select>';
+                    }
                 }
             }
           
           ?>
           <br><p></p>
-          <button type="submit" disabled id="submit" onclick="document.forms[0].submit();" class="btn btn-primary" btn-large> Submit&raquo;</button>
+          <br>
+          <button type="submit" disabled id="submit" onclick="document.forms[0].submit();" class="btn btn-primary" btn-large> Update Preferences &raquo;</button>
 
 </form>
           

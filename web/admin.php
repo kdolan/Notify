@@ -52,7 +52,8 @@ require_once("dbConnect.php");
           <a class="brand" href="index.php">Notify</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <?php if(isAdmin() or true){ echo '<li class="active"><a href="admin.php" >Admin</a></li>'; } ?>
+              <?php if(isAdmin()){ echo '<li class="active"><a href="admin.php" >Admin</a></li>'; } ?>
+              <?php if(hasService()){ echo '<li><a href="sendNotifications.php">Send Notifications</a></li>'; } ?>   
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -104,7 +105,9 @@ require_once("dbConnect.php");
       <legend>Add Service</legend>
           <label>New Service Name</label>
           <input type="text" id="serviceName"  name="serviceName" value="" onchange="validInput()" onkeypress="validInput()" onkeydown="validInput()" onkeyup="validInput()">
-
+    	<label class="checkbox" name"subscription" >
+      		<input type="checkbox" name="subscription" value="subscription"> Subscription based service
+    	</label>
           
           <label>API Key</label>
           <div class="input-append">

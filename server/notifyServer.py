@@ -21,8 +21,12 @@ from email.mime.text import MIMEText
 from email import encoders
 import os
 
+#Email Credentials
 gmail_user = "notify@csh.rit.edu"
 gmail_pwd = "password"
+
+#Server Key (Used to autenticate to notify server. All traffic should be over https inorder to keep this secure.)
+serverKey = "serverKey"
 
 def mail(to, subject, text):
    msg = MIMEText(text)
@@ -54,7 +58,7 @@ def sendNotifications(server):
 	
     #load page and add to json array
 	print("Checking for new notifications...")
-	url = server+"getNotifications.php"
+	url = server+"getNotifications.php"+"?serverKey="+serverKey
 	page = urllib.request.urlopen(url)
 	pageData = page.read()
     #print (pageData)
@@ -81,7 +85,7 @@ def sendNotifications(server):
 		else:
 			sentLstString = sentLstString+","+id
 	
-	url = server+"updateNotifications.php?sentList="+sentLstString
+	url = server+"updateNotifications.php?sentList="+sentLstString+"serverKey="+serverKeys
 	print("    Updating server...")
 	page = urllib.request.urlopen(url)
 	print("    "+str(len(sentLst))+ " notifications sent")
@@ -98,6 +102,7 @@ def main():
 		print("Usage: python3 notifyServer.py [pathToServer refreshIntervalMiliseconds]")
 		print("pathToServer is in this format: https://domain.com/notify/server/ " )
 		print("getNotifications.php and updateNotifications.php must be in that directory.")
+        print("Ensure server path uses https.")
 		return -1
 	
 	while(True):

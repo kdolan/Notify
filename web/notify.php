@@ -33,6 +33,8 @@
         $service = mysql_fetch_array($serviceResult);
         
         $serviceName = $service['serviceName'];
+        $subscriptionBasedService = $service['subscriptionService'];
+        
         
         //Get user
         $query = "SELECT * FROM  `users` WHERE  `username` LIKE  '$username'";
