@@ -22,11 +22,11 @@ from email import encoders
 import os
 
 #Email Credentials
-gmail_user = "notify@csh.rit.edu"
+gmail_user = "email"
 gmail_pwd = "password"
 
 #Server Key (Used to autenticate to notify server. All traffic should be over https inorder to keep this secure.)
-serverKey = "serverKey"
+serverKey = "key"
 
 def mail(to, subject, text):
    msg = MIMEText(text)
@@ -56,16 +56,22 @@ def mail(to, subject, text):
 
 def sendNotifications(server):
 	
-    #load page and add to json array
+        #load page and add to json array
 	print("Checking for new notifications...")
 	url = server+"getNotifications.php"+"?serverKey="+serverKey
 	page = urllib.request.urlopen(url)
 	pageData = page.read()
-    #print (pageData)
+        #print (pageData)
+	if(pageData=="INVALID SERVER KEY"):
+           raise InputError("Invalid server key")
 	jsonString = str(pageData) #removes first three characters from string. Will always be "b' ".
 	jsonString = jsonString[2:]
 	jsonString = jsonString.replace("'","")
 	notificationData = json.loads(jsonString)
+	if(jsonString == "[]"):
+           print("    No notifications to send")
+           return
+	
 	
 	print("    Sending notifications...")
 	sentLst = []
@@ -84,32 +90,33 @@ def sendNotifications(server):
 			sentLstString=id
 		else:
 			sentLstString = sentLstString+","+id
-	
-	url = server+"updateNotifications.php?sentList="+sentLstString+"serverKey="+serverKeys
+	url = server+"updateNotifications.php?sentList="+sentLstString+"&serverKey="+serverKey
 	print("    Updating server...")
 	page = urllib.request.urlopen(url)
 	print("    "+str(len(sentLst))+ " notifications sent")
 		
 	
 def main():
-	# if no command line arguments specified, prompt for the filename
+    # if no command line arguments specified, prompt for the filename
     # and set debug output to False
-	if len(argv) == 3:
-		server = argv[1]
-		interval = float(argv[2])
-    # incorrect number of command line arguments
-	else:
-		print("Usage: python3 notifyServer.py [pathToServer refreshIntervalMiliseconds]")
-		print("pathToServer is in this format: https://domain.com/notify/server/ " )
-		print("getNotifications.php and updateNotifications.php must be in that directory.")
-        print("Ensure server path uses https.")
-		return -1
-	
-	while(True):
-		sendNotifications(server)
-		print("Waiting for "+str(interval)+" seconds.")
-		time.sleep(interval)
+    if len(argv) == 3:
+        server = argv[1]
+        interval = float(argv[2])
+        while(True):
+           sendNotifications(server)
+           print("Waiting for "+str(interval)+" seconds.\n")
+           time.sleep(interval)
 
+    # incorrect number of command line arguments
+    else:
+        
+        print("Usage: python3 notifyServer.py [pathToServer refreshIntervalSeconds]")
+        print("pathToServer is in this format: https://domain.com/notify/server/ " )
+        print("getNotifications.php and updateNotifications.php must be in that directory.")
+        print("Ensure server path uses https.")
+        print("Refersh interval is number of seconds the program waits before checking the server again.")
+        return -1
+        
 
 
 if __name__ == '__main__':

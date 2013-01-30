@@ -19,7 +19,7 @@ require_once("dbConnect.php");
     <meta name="author" content="">
 
     <!-- Le styles -->
-    <link href="../bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
     <style type="text/css">
       body {<link rel="stylesheet" type="text/css" href="">
         padding-top: 60px;

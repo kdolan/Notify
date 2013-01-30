@@ -13,7 +13,7 @@ require_once("dbConnect.php");
     <meta name="author" content="">
 
     <!-- Le styles -->
-    <link href="../bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
     <style type="text/css">
       body {<link rel="stylesheet" type="text/css" href="">
         padding-top: 60px;
@@ -31,7 +31,7 @@ require_once("dbConnect.php");
     
   </head>
 
-  <body>
+  <body onLoad="checkPhone()">
 
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
@@ -168,6 +168,7 @@ require_once("dbConnect.php");
             
             if($userHasPrefs)
             {
+                $counter = 0;
                 while($row = mysql_fetch_array($servicesResult))
                 {
                     $preferenceForThisService = $userInfo[$row['serviceName']];
@@ -184,7 +185,7 @@ require_once("dbConnect.php");
                     	{
                     	if($preferenceForThisService==0)
 						{
-							echo '<h5>'.$row['serviceName'].':</h5> <select id="'.str_replace(' ','',$row['serviceName']).'" name="'.str_replace(' ','',$row['serviceName']).'">
+							echo '<h5>'.$row['serviceName'].':</h5> <select class="subscription" onchange="updateTextMessageOption(this.id)" id="'.$counter.'" name="'.str_replace(' ','',$row['serviceName']).'">
 								<option value="0" selected>Email Notification</option>
 								<option value="1" >Text Message Notification</option>
 								<option value="2">Email and Text Message Notification</option>
@@ -193,7 +194,7 @@ require_once("dbConnect.php");
 						}
 						elseif($preferenceForThisService==1)
 						{
-						echo '<h5>'.$row['serviceName'].':</h5> <select id="'.str_replace(' ','',$row['serviceName']).'" name="'.str_replace(' ','',$row['serviceName']).'">
+						echo '<h5>'.$row['serviceName'].':</h5> <select class="subscription" onchange="updateTextMessageOption(this.id)" id="'.$counter.'" name="'.str_replace(' ','',$row['serviceName']).'">
 								<option value="0" selected>Email Notification</option>
 								<option value="1" selected>Text Message Notification</option>
 								<option value="2">Email and Text Message Notification</option>
@@ -202,7 +203,7 @@ require_once("dbConnect.php");
 						}
 						elseif($preferenceForThisService==2)
 						{
-						echo '<h5>'.$row['serviceName'].':</h5> <select id="'.str_replace(' ','',$row['serviceName']).'" name="'.str_replace(' ','',$row['serviceName']).'">
+						echo '<h5>'.$row['serviceName'].':</h5> <select class="subscription" onchange="updateTextMessageOption(this.id)" id="'.$counter.'" name="'.str_replace(' ','',$row['serviceName']).'">
 								<option value="0" >Email Notification</option>
 								<option value="1" >Text Message Notification</option>
 								<option value="2" selected>Email and Text Notification</option>
@@ -220,7 +221,7 @@ require_once("dbConnect.php");
                     {
 						if($preferenceForThisService==0)
 						{
-							echo '<h5>'.$row['serviceName'].':</h5> <select id="'.str_replace(' ','',$row['serviceName']).'" name="'.str_replace(' ','',$row['serviceName']).'">
+							echo '<h5>'.$row['serviceName'].':</h5> <select class="subscription" onchange="updateTextMessageOption(this.id)" id="'.$counter.'" name="'.str_replace(' ','',$row['serviceName']).'">
 								<option value="0" selected>Email Notification</option>
 								<option value="1" >Text Message Notification</option>
 								<option value="2">Email and Text Message Notification</option>
@@ -229,7 +230,7 @@ require_once("dbConnect.php");
 						}
 						elseif($preferenceForThisService==1)
 						{
-						echo '<h5>'.$row['serviceName'].':</h5> <select id="'.str_replace(' ','',$row['serviceName']).'" name="'.str_replace(' ','',$row['serviceName']).'">
+						echo '<h5>'.$row['serviceName'].':</h5> <select class="subscription" onchange="updateTextMessageOption(this.id)" id="'.$counter.'" name="'.str_replace(' ','',$row['serviceName']).'">
 								<option value="0" selected>Email Notification</option>
 								<option value="1" selected>Text Message Notification</option>
 								<option value="2">Email and Text Message Notification</option>
@@ -238,7 +239,7 @@ require_once("dbConnect.php");
 						}
 						elseif($preferenceForThisService==2)
 						{
-						echo '<h5>'.$row['serviceName'].':</h5> <select id="'.str_replace(' ','',$row['serviceName']).'" name="'.str_replace(' ','',$row['serviceName']).'">
+						echo '<h5>'.$row['serviceName'].':</h5> <select class="subscription" onchange="updateTextMessageOption(this.id)" id="'.$counter.'" name="'.str_replace(' ','',$row['serviceName']).'">
 								<option value="0" >Email Notification</option>
 								<option value="1" >Text Message Notification</option>
 								<option value="2" selected>Email and Text Notification</option>
@@ -247,7 +248,7 @@ require_once("dbConnect.php");
 						}
 						elseif($preferenceForThisService==3)
 						{
-						echo '<h5>'.$row['serviceName'].':</h5> <select id="'.str_replace(' ','',$row['serviceName']).'" name="'.str_replace(' ','',$row['serviceName']).'">
+						echo '<h5>'.$row['serviceName'].':</h5> <select class="subscription" onchange="updateTextMessageOption(this.id)" id="'.$counter.'" name="'.str_replace(' ','',$row['serviceName']).'">
 								<option value="0">Email Notification</option>
 								<option value="1">Text Message Notification</option>
 								<option value="2">Email and Text Message Notification</option>
@@ -256,14 +257,16 @@ require_once("dbConnect.php");
 						}
 						else
 						{
-						echo $row['serviceName'].': <select id="'.str_replace(' ','',$row['serviceName']).'" name="'.str_replace(' ','',$row['serviceName']).'">
+						echo $row['serviceName'].': <select class="subscription" onchange="updateTextMessageOption(this.id)" id="'.$counter.'" name="'.str_replace(' ','',$row['serviceName']).'">
 								<option value="0" selected>Email Notification</option>
 								<option value="1" >Text Message Notification</option>
 								<option value="2">Email and Text Message Notification</option>
 								 <option value="3">No Notifications </option>
 								 </select>';
 						}
+                 
                     }
+                    $counter++;
                 }
             }
             else
@@ -277,7 +280,7 @@ require_once("dbConnect.php");
                     }
                     else
                     {  
-                        echo '<h5>'.$row['serviceName'].':</h5> <select id="'.str_replace(' ','',$row['serviceName']).'" name="'.str_replace(' ','',$row['serviceName']).'">
+                        echo '<h5>'.$row['serviceName'].':</h5> <select onchange="updateTextMessageOption(this.id)"  id="'.$counter.'" name="'.str_replace(' ','',$row['serviceName']).'">
                         <option value="0">Email Notification</option>
                         <option value="1">Text Message Notification</option>
                         <option value="2">Email and Text Message Notification</option>
@@ -324,27 +327,142 @@ require_once("dbConnect.php");
     <script src="../bootstrap/js/bootstrap-typeahead.js"></script>
         <script type="text/javascript">
             var phoneValid = false;
-            function checkPhone()
+            var textEnabledArray = new Array();
+            var textMessageOption = <?php
+            
+            if($userHasPrefs)
             {
-                 var submitbutton = document.getElementById("submit"); 
-                if(phoneValid)
+                 $servicesQuery = "SELECT * FROM  `apiKeys` ";
+                 $servicesResult = mysql_query($servicesQuery);
+                
+                $preferenceFound = false;
+                $counter = 0;
+                while($row = mysql_fetch_array($servicesResult))
                 {
-                    submitbutton.disabled = false;
+                 
+                    $preferenceForThisService = $userInfo[$row['serviceName']];
+                    //echo $preferenceForThisService;
+                    if($preferenceForThisService==1 or $preferenceForThisService==2)
+                    {
+                        echo "true;";
+                        $preferenceFound = true;
+                        echo "textEnabledArray[".$counter."] = 1;";  
+                    }
+                    else
+                    {
+                        echo "textEnabledArray[".$counter."] = 0;";
+                        continue;
+                    }
+                    $counter++;  
+                }
+                if($preferenceFound==false)
+                {
+                   echo "false;";   
+                } 
+            
+            
+            }
+            else
+            {
+                 echo "false;";     
+            }
+            ?>
+            
+            
+            
+            
+            function updateTextMessageOption(id)
+            {
+                var sentSelect = document.getElementById(id);
+                var foundTextMessage = false;    
+                
+                if(sentSelect.value == 1 || sentSelect.value == 2  )
+                {                                                         
+                      textMessageOption = true;
                 }
                 else
                 {
-                    submitbutton.disabled = true;
+                   elementList = document.querySelectorAll(".subscription"); 
+                   
+                   for(var slector in elementList )
+                   {
+                       if(slector==null)
+                       {
+                           continue;
+                       }
+                       var thisSelector = document.getElementById(slector);
+                       var foundTextMessage = false;
+                       try{ 
+                       //alert(thisSelector.value);
+                       if(thisSelector.value == 1 || thisSelector.value == 2  )
+                       {
+                           //alert("SET TRUE");
+                           textMessageOption = true;
+                           foundTextMessage = true;
+                           //checkPhone();
+                           return 0;
+                       }
+                       }
+                       catch(err) 
+                       {
+                           
+                       }
+                   }
+                   //alert(foundTextMessage);
+                   if(foundTextMessage==false)
+                   {
+                       textMessageOption = false;
+                       //alert("CALL CHECK PHONE"); 
+                       validatePhone();         
+                   }      
+                }
+                    
+                validatePhone();
+                return 0;
+            }
+            
+            function checkPhone()
+            {
+                var submitbutton = document.getElementById("submit");
+                
+                if(textMessageOption==false)
+                {
+                   submitbutton.disabled = false;      //fasle
+                   return 0;
+                } 
+                if(phoneValid)
+                {
+                    submitbutton.disabled = false;  //false
+                }
+                else
+                {
+                    submitbutton.disabled = true; //true
                 }
             }
             function validatePhone() {
                 var error = "";
-                
+                //alert(textMessageOption);
+
                 
                 var phoneInput = document.getElementById("cellPhone"); 
                 var phoneDiv = document.getElementById("cellPhoneDiv");             
                 var errorSpan = document.getElementById('cellPhoneError');
                 
+                                while( errorSpan.firstChild ) {
+                    errorSpan.removeChild( errorSpan.firstChild );
+                }
+                
                 var stripped = phoneInput.value.replace(/[\(\)\.\-\ ]/g, '');
+                
+                if(textMessageOption==false)
+                {
+                    phoneDiv.className="";
+                    phoneValid = true;
+                    error=""; 
+                    errorSpan.appendChild( document.createTextNode(error) );
+                    checkPhone();
+                    return 0;
+                }
 
                 while( errorSpan.firstChild ) {
                     errorSpan.removeChild( errorSpan.firstChild );
@@ -366,6 +484,7 @@ require_once("dbConnect.php");
                 else
                 {
                     phoneDiv.className="";
+                    error="";
                     phoneValid = true;
                 }
                 errorSpan.appendChild( document.createTextNode(error) );
